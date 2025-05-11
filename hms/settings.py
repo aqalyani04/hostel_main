@@ -11,7 +11,9 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
-
+import os
+#from dotenv import load_dotenv
+#load_dotev()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -69,11 +71,11 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'hms.wsgi.application'
-
+DB_lIVE= os.getenv("DB_LIVE")
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
-
-DATABASES = {
+if DB_lIVE in ["False", False]:
+    DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'hms_db',
@@ -81,6 +83,17 @@ DATABASES = {
         'PASSWORD': 'Qwerty@786',  # Replace with the password you set during PostgreSQL installation
         'HOST': 'localhost',
         'PORT': '5432',
+    }
+}
+else:
+    DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv("DB_NAME"),
+        'USER': os.getenv("DB_USER"),
+        'PASSWORD': os.getenv("DB_PASSWORD"), # Replace with the password you set during PostgreSQL installation
+        'HOST': os.getenv("DB_HOST"),
+        'PORT': os.getenv("DB_PORT"),
     }
 }
 
